@@ -1,0 +1,49 @@
+/* line 1, ../../compass/sass/styles.scss */
+body {
+  background-color: #1d96d7;
+}
+
+/* line 5, ../../compass/sass/styles.scss */
+.header {
+  height: 60px;
+  background-color: #fff;
+}
+/* line 8, ../../compass/sass/styles.scss */
+.header .menu-wrapper {
+  max-width: 960px;
+  margin: auto;
+}
+/* line 11, ../../compass/sass/styles.scss */
+.header .menu-wrapper li {
+  float: left;
+  list-style-type: none;
+  padding: 0px 20px;
+}
+
+/* line 19, ../../compass/sass/styles.scss */
+.main-content {
+  max-width: 960px;
+  margin: auto;
+  border-radius: 5px;
+  background-color: #fff;
+  overflow: hidden;
+}
+/* line 25, ../../compass/sass/styles.scss */
+.main-content .header-image {
+  text-align: center;
+}
+/* line 27, ../../compass/sass/styles.scss */
+.main-content .header-image img {
+  max-width: 100%;
+  border-radius: 12px;
+}
+/* line 32, ../../compass/sass/styles.scss */
+.main-content .left-content-bar {
+  width: 69%;
+  display: inline-block;
+}
+/* line 36, ../../compass/sass/styles.scss */
+.main-content .right-content-bar {
+  width: 29%;
+  display: inline-block;
+}
