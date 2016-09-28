@@ -11,7 +11,13 @@ mysql.init_app(app)
 
 @app.route("/")
 def index():
-	return render_template('index.html')
+	# set up a cursor object whihc is what the sql object uses to connect and run queries
+	cursor = mysql.connect().cursor()
+	# execute our query
+	cursor.execute("SELECT content FROM page_content WHERE page='home' AND location='header' AND status=1")
+	header_text = cursor.fetchall()
+	print header_text
+	return render_template('index.html',header=header_text)
 
 if __name__ == "__main__":
 	app.run(debug=True)
