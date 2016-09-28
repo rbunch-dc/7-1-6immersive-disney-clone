@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-
-	<link rel="stylesheet" type="text/css" href="static/css/styles.css">
-
-</head>
-<body>
-
+{% extends 'layout.html' %}
+{% block body %}
 	<div class="header">
 		<ul class="menu-wrapper">
 			<li>Parks & Tickets</li>
@@ -23,11 +15,14 @@
 			<h1>Disney's Animal Kingdom Theme Park</h1>
 		</div>
 		<div class="header-image">
+
+
+
 			<img src="static/images/animal-kingdom-00-full.jpg">
 		</div>
 		<div class="left-content-bar">
 			<p class="left-bar-header">
-				{{header[0]}}
+				{{header}}
 			</p>
 			<div class="left-block-items">
 				<div class="left-block-item">
@@ -128,6 +123,4 @@
 		Welcome to the home page... more is coming!
 	</div>
 
-
-</body>
-</html>
+{% endblock %}
