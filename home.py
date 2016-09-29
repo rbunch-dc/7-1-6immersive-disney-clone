@@ -14,6 +14,7 @@ conn = mysql.connect()
 # set up a cursor object whihc is what the sql object uses to connect and run queries
 cursor = conn.cursor()
 
+# Sessions require a secret_key to try and protect the var
 app.secret_key = 'HSDG#$%T34t35t3tREGgfsDG34t34543t3455fdsfgdfsgd'
 
 @app.route("/")
@@ -21,9 +22,21 @@ def index():
 	# execute our query
 	cursor.execute('''SELECT content FROM page_content WHERE page='home' AND location='header' AND status=1''')
 	header_text = cursor.fetchall()
-	print header_text
+	# a_list = j(header_text)
+	# cursor.exectue('SELECT...')
+	# cursor.execute('''SELECT content FROM page_content WHERE page='home' AND location='header' AND status=1''')
+	# left_stuff = cursor.fetchall()
+	# Write a queryt that will pull the three main fields for all rows that have page as home, and left_block as location. Alsp, make sure they are publisehd (status = 1)
+	left_block_query = "SELECT header_text,content,image_link FROM page_content WHERE page = 'home' AND location = 'left_block' AND status = 1 ORDER BY priority asc"
+	# Run the query
+	cursor.execute(left_block_query)
+	# Turn the query into something Python can use via fetchall
+	data = cursor.fetchall()
+	# print header_text
 	return render_template('index.html',
-		header=header_text
+		header=header_text,
+		# Add a new variable "left_data" to be used in the template
+		left_data = data
 	)
 
 # Make a new route called admin
@@ -40,6 +53,12 @@ def admin():
 		# otherwise, just return the tempalte
 	else:
 		return render_template('admin.html')
+
+@app.route('/logout')
+def logout():
+	# Nuke their session vars. This will end the session which is waht we use to let them into the portal
+	session.clear()	
+	return redirect('/admin?message=LoggedOut')
 
 # Make a new route called admin_submit. Add method POST so that the form can get here.
 @app.route('/admin_submit', methods=['GET', 'POST'])
@@ -60,7 +79,15 @@ def admin_portal():
 	# Session variable "username" exits... proceed.
 	# Make sure to check if it's in teh dictaionry rather than just "if"
 	if 'username' in session:
-		return render_template('admin_portal.html')
+		home_page_query = "SELECT header_text,content,image_link,location,id FROM page_content WHERE page = 'home' AND status = 1"
+		# Run the query
+		cursor.execute(home_page_query)
+		# Turn the query into something Python can use via fetchall
+		data = cursor.fetchall()		
+		return render_template('admin_portal.html',
+			# Data is what it is here, home_page_content is what it is to the template
+			home_page_content = data
+		)
 	# You have no ticket. No soup for you
 	else:
 		return redirect('/admin?message=YouMustLogIn')
@@ -76,19 +103,30 @@ def admin_update():
 
 		# set up a cursor object whihc is what the sql object uses to connect and run queries
 		# cursor = mysql.connect().cursor()
+
 		# execute our query
 		query = "INSERT INTO page_content VALUES (DEFAULT, 'home', '"+body+"', 1,1,'left_block', NULL, '"+header+"', '"+image+"')"
 		# print query
-		result = cursor.execute(query)
-		print result
+		cursor.execute(query)
 		conn.commit()
 		return redirect('/admin_portal?success=Added')
-
-
 	# You have no ticket. No soup for you
 	else:
 		return redirect('/admin?message=YouMustLogIn')
 
+@app.route('/edit/<id>', methods=['GET', 'POST'])
+def edit(id):
+	if request.method == 'GET':
+		# Write a query that gets the row with the matching id
+		query = "SELECT header_text,content,image_link,id,status,priority FROM page_content WHERE id = %s" % id
+		print query	
+		cursor.execute(query)
+		data = cursor.fetchone()
+		return render_template('edit.html',
+			data = data
+		)
+	else:
+		# Do the post stuff
 
 if __name__ == "__main__":
 	app.run(debug=True)

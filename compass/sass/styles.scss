@@ -95,3 +95,24 @@ body{
 		}
 	}
 }
+
+form{
+	clear: both;
+}
+
+#nav{
+	overflow: hidden;
+	margin: auto;
+	ul{
+		list-style: none;
+		li{
+			float: left;
+			margin-left: 20px;
+			a{
+				color: #fff;
+				font-size: 18px;
+			}
+		}
+	}
+}
+
